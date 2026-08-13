@@ -12,14 +12,14 @@ This section presents the results of the binary and multiclass models for Kepler
 
     \begin{subfigure}[b]{0.9\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{paper/figures/plots/bi_training_loss_history.png}
+        \includegraphics[width=\textwidth]{figures/plots/bi_training_loss_history.png}
         \caption{Changes in the model's loss over epochs}
         \label{fig:bi_history_loss}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.9\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{paper/figures/plots/bi_training_accuracy_history.png}
+        \includegraphics[width=\textwidth]{figures/plots/bi_training_accuracy_history.png}
         \caption{Changes in the model's accuracy over epochs}
         \label{fig:bi_history_acc}
     \end{subfigure}
@@ -54,7 +54,7 @@ The F1 score of $0.85$ sumarizes the balance of the precision and recall. This v
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\linewidth]{paper/figures/plots/bi_confusion_matrix.png}
+    \includegraphics[width=1.0\linewidth]{figures/plots/bi_confusion_matrix.png}
     \caption{The above plot is a 2x2 confusion matrix. The results show that the model comfortably classifies the true transits but is not able to make confident predictions for about a quarter of eclipsing binary cases.}
     \label{fig:acc_conf_matrix}
 \end{figure}
@@ -67,7 +67,7 @@ Of the 1555 test instances used, 231 were misclassified. There were 193 false po
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\linewidth]{paper/figures/plots/bi_confidence_correct_vs_incorrect.png}
+    \includegraphics[width=0.7\linewidth]{figures/plots/bi_confidence_correct_vs_incorrect.png}
     \caption{A histogram showing the spread of frequency of each confidence value the binary model returned. All correct classifications shown in blue while incorrect classifications shown in orange. An interesting bump in mistakes by the model is found in the high 0.8 region.}
     \label{fig:conf_corr_vs_incorr_hist}
 \end{figure}
@@ -105,7 +105,7 @@ In the false positive plot, there is a broad distribution of SNR values in the l
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{paper/figures/plots/bi_mistake_ratios_by_calculated_snr_and_confidence_bottom.png}
+    \includegraphics[width=0.9\linewidth]{figures/plots/bi_mistake_ratios_by_calculated_snr_and_confidence_bottom.png}
     \caption{Incorrect classification ratio for the binary CNN across calculated SNR groups and prediction-confidence levels. The numbers listed above each bar show the number of incorrectly classified samples in each bin.}
     \label{fig:bi_mistake_ratio_calc_snr}
 \end{figure}
@@ -119,7 +119,7 @@ Figure~\ref{fig:bi_mistake_ratio_calc_snr} focuses on the incorrect classificati
 
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{paper/figures/plots/fp_boxplot_transit_depth_abs.png}
+        \includegraphics[width=\textwidth]{figures/plots/fp_boxplot_transit_depth_abs.png}
         \caption{Boxplot of absolute depth values for false positives}
         \label{fig:depth_boxplot_fp}
     \end{subfigure}
@@ -141,7 +141,7 @@ Just like the calculated signal-to-noise ratio, the transit depth can be split i
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{paper/figures/plots/bi_mistake_ratios_by_absolute_transit_depth_and_confidence_bottom.png}
+    \includegraphics[width=0.9\linewidth]{figures/plots/bi_mistake_ratios_by_absolute_transit_depth_and_confidence_bottom.png}
     \caption{Incorrect classification ratio for the binary CNN across transit-depth groups and prediction-confidence levels. The numbers listed above each bar show the number of incorrectly classified samples in each bin.}
     \label{fig:bi_mistake_ratio_depth}
 \end{figure}
@@ -213,7 +213,7 @@ Figure~\ref{fig:mc_mistake_ratio_depth} shows the incorrect classification ratio
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{paper/figures/plots/multiclass/mc_mistake_ratios_by_absolute_transit_depth_and_confidence_bottom.png}
+    \includegraphics[width=0.9\linewidth]{figures/plots/multiclass/mc_mistake_ratios_by_absolute_transit_depth_and_confidence_bottom.png}
     \caption{Incorrect classification ratio for the multiclass CNN across absolute transit-depth groups and confidence groups. The values above each bar show the number of misclassified samples in each depth and confidence bin.}
     \label{fig:mc_mistake_ratio_depth}
 \end{figure}
@@ -226,14 +226,14 @@ To determine if the models are an improvement against simpler models, a random f
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{paper/figures/plots/bi_feature_importance.png}
+        \includegraphics[width=\textwidth]{figures/plots/bi_feature_importance.png}
         \subcaption{Feature importances for the binary random forest model.}
         \label{fig:bi_rf_cols}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{paper/figures/plots/bi_rf_confusion_matrix.png}
+        \includegraphics[width=\textwidth]{figures/plots/bi_rf_confusion_matrix.png}
         \subcaption{Confusion matrix for the binary random forest model on the test set.}
         \label{fig:bi_rf_confusion_matrix}
     \end{subfigure}
@@ -248,14 +248,14 @@ Using now a random forest classifier on the multiclass model, Figure~\ref{fig:mc
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{paper/figures/plots/multiclass/mc_feature_importance.png}
+        \includegraphics[width=\textwidth]{figures/plots/multiclass/mc_feature_importance.png}
         \subcaption{Feature importances for the multiclass random forest model.}
         \label{fig:mc_rf_cols}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{paper/figures/plots/multiclass/mc_rf_confusion_matrix.png}
+        \includegraphics[width=\textwidth]{figures/plots/multiclass/mc_rf_confusion_matrix.png}
         \subcaption{Confusion matrix for the multiclass random forest model on the test set.}
         \label{fig:mc_rf_confusion_matrix}
     \end{subfigure}
