@@ -1,0 +1,18 @@
+\subsection{Light-Curve Morphology} \label{sec:light-curve-morphology}
+
+Transit photometry observes the flux from stars, searching for periodic decreases in brightness caused by a planet crossing the stellar disk \citep{Exoplanet_Detection_Methods}. This method has become the most successful approach for exoplanet detection, with over 4300 confirmed planets discovered through transits \citep{Num_Transit_Exoplanets_Discovered}. Since transit observations are naturally represented as one-dimensional light curves, their depth, duration, and shape provide a suitable input structure for machine learning models. An example of a Kepler transit light curve is shown in Figure~\ref{fig:example_transit_&_EB}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{figures/images/lightcurve_examples.png}
+    \caption{These light curves are examples of the one-dimensional Kepler data used in the model training done in this paper. The top plot is a 100-day chunk of KIC 7100673, a confirmed transit light curve. The bottom plot is a 100-day chunk of KIC 1026032, a confirmed eclipsing binary light curve. The model looks for features such as the dips and their duration and shape to classify the data as a transiting light curve. \textbf{(Maybe discuss the noticeable differences)}}
+    \label{fig:example_transit_&_EB}
+\end{figure}
+
+\begin{align}
+    \delta F \approx \left(\frac{R_p}{R_*}\right)^2 \label{eq:flux_depth}
+\end{align}
+
+Astronomers analyse many features in transit light curves which describe key parameters of the exoplanet system. The depth of the transit provides an estimate of the planet-to-star radius ratio, as shown in Equation~\ref{eq:flux_depth} \citep{2010exop.book...55W, 2003ApJ...585.1038S}. Here $\delta F$ is the change in normalized flux caused by the transit dip, while $R_p$ and $R_*$ represent the radii of the exoplanet and host star, respectively. As the ratio of radii between a planet and star is relatively small, planetary transits usually produce shallow decreases in flux. In eclipsing binary systems, the occulting body is another star, so the radius ratio is generally larger and the resulting eclipse depth can be greater than that of a planetary transit.
+
+Transit shape also contains useful information. The ingress and egress are the times when the planet begins and ends its passage across the stellar disk, while the duration represents the total time spent in transit \citep{2010exop.book...55W}. Transiting exoplanets usually produce rounded, U-shaped dips, whereas grazing eclipsing binaries can produce sharper V-shaped features that may resemble transit-like signals \citep{2010exop.book...55W}.

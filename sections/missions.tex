@@ -1,0 +1,26 @@
+\subsection{Kepler Mission}
+
+The \textit{Kepler} mission was designed to identify exoplanets using high-precision transit photometry. NASA operated \textit{Kepler} between 2009 and 2013, during which it monitored more than 190,000 stars in a fixed 115 square degree field toward the Cygnus and Lyra constellations \citep{Kepler_Mission, 2016ApJS..224...12C}. Its continuous observations produced long-cadence light curves with a sampling interval of approximately 29.4 minutes, providing the time-series data used for transit detection and classification in this work \citep{Borucki_2010_Kepler}.
+
+The \textit{Kepler} catalogue identifies observed stars using Kepler IDs (KepIDs), while stars showing transit-like signals are labelled as Kepler Objects of Interest (KOIs). KOIs that pass further vetting are classified as planet candidates. The final \textit{Kepler} catalogue demonstrated that detection performance depends strongly on orbital period and signal-to-noise ratio, with completeness and reliability decreasing for longer-period and lower-SNR planets \citep{2018ApJS..235...38T}. This is important for automated classification because shallow or low-SNR transit-like signals are more difficult to distinguish from astrophysical false positives.
+
+Although \textit{Kepler} observed only a small region of the sky, it produced a large archive of high-precision light curves and transit-like events. This makes it a valuable dataset for developing and testing machine-learning methods that classify transit-like light curves efficiently and consistently.
+
+\begin{comment}
+
+Just see if any of this info is still useful?:
+
+\section{Kepler Mission}
+
+As transit detections require long duration, continuous observations, several missions have been designed to monitor a large number of stars for potential exoplanet signals. Overall, these missions have collected extensive light curves for more than 20 million stars \citep{Borucki_2010_Kepler, Ricker2015}.
+
+The \textit{Kepler} mission was designed to identify exoplanets using high-precision transit photometry, focusing primarily on F--K type stars where planetary transits produce relatively detectable decreases in stellar flux. NASA operated \textit{Kepler} between 2009 and 2013, during which it monitored more than 190,000 stars in a fixed 115 square degree field toward the Cygnus and Lyra constellations \citep{Kepler_Mission, 2016ApJS..224...12C}. The final \textit{Kepler} catalogue reported 8054 Kepler Objects of Interest (KOIs), including 4034 planet candidates and 10 terrestrial-size planets in the habitable zones of their host stars \citep{2018ApJS..235...38T}.
+
+Although \textit{Kepler} observed only a small region of the sky, its catalogue demonstrated the scale of the transit-classification problem. Large photometric surveys produce thousands of transit-like signals, many of which require further vetting to distinguish planetary candidates from astrophysical false positives. This makes \textit{Kepler} a valuable dataset for developing and testing machine-learning methods that can classify transit-like light curves efficiently and consistently.
+
+The \textit{Kepler} catalogue labels each star it observes with a Kepler id called a KepID. For the KepIDs with as stars exhibiting transit-like signals that may originate from exoplanet systems, they are called \textit{Kepler} Objects of Interest (KOIs). Any KOI which passes the vetting process are classified as exoplanet candidates.
+
+The final \textit{Kepler} catalogue also showed that detection performance depends strongly on orbital period and signal-to-noise ratio, with completeness and reliability decreasing for longer-period and lower-SNR planets \citep{2018ApJS..235...38T}. This is relevant for automated classification because shallow or low-SNR transit-like signals are more difficult to distinguish from false positives.
+
+\textit{Kepler}'s continuous, high-precision photometry produced long-cadence light curves with a sampling interval of approximately 29.4 minutes, providing the time-series data used for transit detection and classification in this work \citep{Borucki_2010_Kepler}.
+\end{comment}
