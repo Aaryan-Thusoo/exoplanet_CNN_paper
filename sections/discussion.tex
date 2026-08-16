@@ -2,11 +2,15 @@
 
 The goal of this paper is to accurately classify light curves as representing potential exoplanets amongst many false positive cases. The binary model focused on the most common false positive occurring from eclipsing binary systems. The multiclass model attempts to include a separation between deep eclipsing binaries and shallow eclipsing binaries. Further cases can be added to give more possible classifications but for now the most important categories were covered.
 
-The binary model produced good results which show the model is clearly able to make distinctions between real and fake transit cases. While some light curve instances were outliers thus affecting the model, there are few cases which manage to trick the binary classifier. Figure~\ref{fig:good_vs_bad_examples} shows a collection of good and poor example instances used in the training. The first plot is a simple example of poor data as this is not representative of a real light curve formed by systems. The second light curve is from a misclassified eclipsing binary. \textbf{(What do we see?)}. The final instance is of a transit which was misclassified as an eclipsing binary. \textbf{(What do I say?)}
+The data preparation did not apply any sigma-clipping of the normalized light curves. This was due to previous experiments showing that any application of clipping reduced the binary model across all metrics. The final decision to remove clipping, was motivated by the concern of outlier rejection accidentally removing important astrophysical information. \textbf{(Also try and discuss other changes to the prep stuff. I will do more experiments once its done checking clipping)}
+
+The binary model produced strong results which indicate it is very efficient in classifying distinctions between real and fake transit cases. 
+
+While some light curve instances were outliers thus affecting the model, there are few cases which manage to trick the binary classifier. Figure~\ref{fig:good_vs_bad_examples} shows a collection of good and poor example instances used in the training. The first plot is a simple example of poor data as this is not representative of a real light curve formed by systems. The second light curve is from a misclassified eclipsing binary. \textbf{(What do we see?)}. The final instance is of a transit which was misclassified as an eclipsing binary. \textbf{(What do I say?)}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{figures/images/good_bad_binary_examples.png}
+    \includegraphics[width=0.9\linewidth]{figures/images/good_bad_binary_examples.png}
     \caption{Caption}
     \label{fig:good_vs_bad_examples}
 \end{figure}
@@ -28,6 +32,8 @@ There are a few things which could be done in a future project to improve result
 
 Models can also be trained using other models and is utilized in many machine learning cases across different fields. One way to use this in this work could be to develop synthetic data to initially train the model off of. If the generated data is made to be statistically significant compared to the real Kepler data, it can be used to make a basic starting model. Then, by creating a strong model off the synthetic light curves, the architecture can be reused on real data to potentially struggle less with the classification of real light curves.  
  
+
+
 
 \begin{comment}
 Is any of this useful to mention here?
