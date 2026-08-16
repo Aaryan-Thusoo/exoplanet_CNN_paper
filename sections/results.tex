@@ -38,19 +38,19 @@ Experiments using higher or lower epochs led to a consistent trend of overfittin
 \begin{table}[H]
     \centering
     \begin{tabular}{c|c}
-        Accuracy & 0.83 \\ \hline
-        Precision & 0.79 \\ \hline
-        Recall & 0.92\\ \hline
-        F1 Score & 0.85\\ \hline
-        ROC AUC & 0.88
+        Accuracy & 0.92 \\ \hline
+        Precision & 0.88 \\ \hline
+        Recall & 0.98\\ \hline
+        F1 Score & 0.93\\ \hline
+        ROC AUC & 0.98
     \end{tabular}
     \caption{The above table shows the final metrics of the model. The returned scores are good baselines to build stronger models off of.}
     \label{tab:metrics_table}
 \end{table}
 
-The accuracy shows the model correctly classified about $83\%$ of all the test light curves. Overall this is a reasonable performance indicating the model could be useful in further classifiers. On its own however, accuracy is not enough to confirm the model performs equally for both classes. The precision and recall metrics provide class specific context. A precision of $79\%$ means most of the instances the binary model classified as a transit were actual transiting exoplanets. However a non-negligable fraction of them were incorrectly labelled and $22\%$ of them were false transit detections. The recall of $92\%$ means the model recovered most of the true transits. While this is good these results may suggest a bias for the model to predict transiting exoplanets. 
+The accuracy shows the model correctly classified about $92\%$ of all the test light curves. This is a strong performance indicating the model will be useful in further classifiers. On its own however, accuracy is not enough to confirm the model performs equally for both classes. The precision and recall metrics provide class specific context. A precision of $88\%$ means most of the instances the binary model classified as a transit were actual transiting exoplanets. However a non-negligable fraction of them were incorrectly labelled and $12\%$ of them were false transit detections. The recall of $98\%$ means the model recovered most of the true transits. While this is good these results may suggest a bias for the model to predict transiting exoplanets. 
 
-The F1 score of $0.85$ sumarizes the balance of the precision and recall. This value indicates the model maintains a reasonable balance between recovering true transits and avoiding false transit detections, although precision remains the weaker component. Finally, the ROC AUC result of $0.88$ is strong and thus the model separates score ranks the classes reasonably well across classification thresholds. There is however still room for threshold tuning to potentially improve the model further. 
+The F1 score of $0.93$ sumarizes the balance of the precision and recall. This value indicates the model maintains a reasonable balance between recovering true transits and avoiding false transit detections, although precision remains the weaker component. Finally, the ROC AUC result of $0.98$ is strong and thus the model separates score ranks the classes reasonably well across classification thresholds. There is little to no room for threshold tuning to potentially improve the model further. 
 
 \begin{figure}[H]
     \centering
