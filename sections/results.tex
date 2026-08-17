@@ -38,19 +38,19 @@ Experiments using higher or lower epochs led to a consistent trend of overfittin
 \begin{table}[H]
     \centering
     \begin{tabular}{c|c}
-        Accuracy & 0.92 \\ \hline
-        Precision & 0.88 \\ \hline
-        Recall & 0.98\\ \hline
-        F1 Score & 0.93\\ \hline
-        ROC AUC & 0.98
+        Accuracy & 89.5\% \\ \hline
+        Precision & 83.1\% \\ \hline
+        Recall & 98.9\%\\ \hline
+        F1 Score & 90.3\%\\ \hline
+        ROC AUC & 0.950
     \end{tabular}
-    \caption{The above table shows the final metrics of the model. The returned scores are good baselines to build stronger models off of.}
+    \caption{The above table shows the final metrics of the binary model. The returned scores are good baselines to build stronger models off of.}
     \label{tab:metrics_table}
 \end{table}
 
-The accuracy shows the model correctly classified about $92\%$ of all the test light curves. This is a strong performance indicating the model will be useful in further classifiers. On its own however, accuracy is not enough to confirm the model performs equally for both classes. The precision and recall metrics provide class specific context. A precision of $88\%$ means most of the instances the binary model classified as a transit were actual transiting exoplanets. However a non-negligable fraction of them were incorrectly labelled and $12\%$ of them were false transit detections. The recall of $98\%$ means the model recovered most of the true transits. While this is good these results may suggest a bias for the model to predict transiting exoplanets. 
+The accuracy shows the model correctly classified about $90\%$ of all the test light curves. This is a strong performance indicating the model will be useful in further classifiers. On its own however, accuracy is not enough to confirm the model performs equally for both classes. The precision and recall metrics provide class specific context. A precision of $83\%$ means most of the instances the binary model classified as a transit were actual transiting exoplanets. However a non-negligable fraction of them were incorrectly labelled and $12\%$ of them were false transit detections. The recall of $99\%$ means the model recovered most of the true transits. While this is good these results may suggest a bias for the model to predict transiting exoplanets. 
 
-The F1 score of $0.93$ sumarizes the balance of the precision and recall. This value indicates the model maintains a reasonable balance between recovering true transits and avoiding false transit detections, although precision remains the weaker component. Finally, the ROC AUC result of $0.98$ is strong and thus the model separates score ranks the classes reasonably well across classification thresholds. There is little to no room for threshold tuning to potentially improve the model further. 
+The F1 score of $90\%$ sumarizes the balance of the precision and recall. This value indicates the model maintains a reasonable balance between recovering true transits and avoiding false transit detections, although precision remains the weaker component. Finally, the ROC AUC result of $0.95$ is strong and thus the model separates score ranks the classes reasonably well across classification thresholds. There is little to no room for threshold tuning to potentially improve the model further. 
 
 \begin{figure}[H]
     \centering
@@ -68,7 +68,7 @@ Of the 1555 test instances used, 231 were misclassified. There were 193 false po
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/plots/bi_confidence_correct_vs_incorrect.png}
-    \caption{A histogram showing the spread of frequency of each confidence value the binary model returned. All correct classifications shown in blue while incorrect classifications shown in orange. An interesting bump in mistakes by the model is found in the high 0.8 region.}
+    \caption{A histogram showing the spread of frequency of each confidence value the binary model returned. All correct classifications shown in blue while incorrect classifications shown in orange. An interesting bump in mistakes by the model is found in the high 0.8-1.0 region.}
     \label{fig:conf_corr_vs_incorr_hist}
 \end{figure}
 
@@ -197,12 +197,12 @@ Taking a look at the multiclass model's confusion matrix in Figure~\ref{fig:mc_c
 \begin{table}[H]
     \centering
     \begin{tabular}{c|c}
-        Accuracy & 0.76 \\ \hline
-        Macro-Averaged Precision & 0.76 \\ \hline
-        Macro-Averaged Recall & 0.75\\ \hline
-        Macro-Averaged F1 Score & 0.75\\ \hline
+        Accuracy & 0.78 \\ \hline
+        Macro-Averaged Precision & 0.79 \\ \hline
+        Macro-Averaged Recall & 0.78\\ \hline
+        Macro-Averaged F1 Score & 0.79\\ \hline
     \end{tabular}
-    \caption{The above table shows the final metrics of the multiclass model. All scores are fine but for use on new data the results need to be improved to increase reliability.}
+    \caption{The above table shows the final metrics of the multiclass model. The introduction of the shallow eclipsing and deep eclipsing binary split has lowered the metrics compared to the binary model but is not indicative of worse outcomes.}
     \label{tab:mc_metrics_table}
 \end{table}
 
@@ -288,9 +288,9 @@ Figure~\ref{fig:mc_rf_confusion_matrix} looks at the confusion matrix generated 
     \begin{tabular}{c|c|c|c|c}
         Model & Accuracy & Precision & Recall & F1 Score \\ \hline
         Binary CNN & 0.83 & 0.79 & 0.92 & 0.85 \\
-        Binary RF & 0.80 & 0.78 & 0.85 & 0.81 \\
+        Binary RF & 0.89 & 0.85 & 0.94 & 0.89 \\
         Multiclass CNN & 0.76 & 0.76 & 0.75 & 0.75 \\
-        Multiclass RF & 0.79 & 0.79 & 0.79 & 0.79
+        Multiclass RF & 0.80 & 0.81 & 0.80 & 0.80
     \end{tabular}
     \caption{Comparison of CNN and random forest model performance.}
     \label{tab:model_comparison}
