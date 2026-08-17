@@ -6,6 +6,7 @@
 \usepackage{natbib}
 \usepackage{url}
 \usepackage{subcaption}
+\captionsetup[subfigure]{skip=10pt}
 \usepackage{array}
 \usepackage{comment}
 \usepackage{tabularx}
@@ -68,51 +69,6 @@
 
 \newpage 
 \appendix \label{sec:Appendix}
-
-\section{Transit Geometry} \label{sec:Transit_Geometry}
-
-Several parameters describing the geometry of a transiting exoplanet system can be derived from the transit light curve. One of the most important is the impact parameter $(b)$, defined as the projected distance between the centre of the stellar disk and the transit chord:
-
-\begin{align}
-    b = \frac{a\cos{i}}{R_*}
-\end{align}
-
-Here, $a$ is the semi-major axis of the orbit, $i$ is the inclination, and $R_*$ is the radius of the star. These values are found using other methods but when combined give a good estimate for the impact parameter. Alongside the impact parameter, astronomers can get an accurate calculation of the transits duration as well. 
-
-\begin{align}
-    T = \frac{P}{\pi}\arcsin{\left(\frac{R_*}{a}\frac{\sqrt{(1-R_p/R_*)^2-b^2}}{\sin{i}}\right)}
-\end{align}
-
-$P$ is the period of the entire orbit which is easily resolved from the light curve and $R_p$ is the planets radius found using Equation~\ref{eq:flux_depth} \citep{2010exop.book...55W}. 
-
-\section{Signal to Red Noise} \label{sec:Signal_to_Red_Noise}
-
-\begin{align}
-    S_{red}=\frac{\delta\sqrt{N_t}}{\sigma L^b}
-\end{align}
-
-$L$ is average number of data points in one transit and it is in a power law with b which quantifies covariance structure of the correlated noise. $\sigma$ is the weighted rms scatter of the unbinned data set. Lastly $\delta$ is the flux depth. \citep{2006MNRAS.373..799C} 
-
-\section{Transit Detection Statistic} \label{sec:Transit_Detection_Statistic}
-
-Many transit-search algorithms detect signals by comparing the average
-stellar flux inside and outside a proposed transit window. In the
-Box Least Squares (BLS) algorithm the transit depth can be expressed as
-
-\begin{equation}
-\delta = \overline{F}_{\mathrm{out}} - \overline{F}_{\mathrm{in}}
-\end{equation}
-
-where $\overline{F}_{\mathrm{in}}$ and $\overline{F}_{\mathrm{out}}$ denote
-the mean flux during and outside the transit respectively. The statistical
-significance of the detection can then be approximated by
-
-\begin{equation}
-S = \frac{\delta}{\sigma}\sqrt{N_{\mathrm{tr}}},
-\end{equation}
-
-where $\sigma$ is the photometric noise of the light curve and
-$N_{\mathrm{tr}}$ is the number of observations within the transit window \citep{BLS_Algorithm}.
 
 \section{Neural Network Metric Equations} \label{sec:NN_equations}
 
@@ -185,6 +141,53 @@ Another expression of the signal to noise results is shown in Figure~\ref{fig:sn
     \caption{Incorrect classification ratio across SNR groups and confidence groups.}
     \label{fig:snr_ratio_bottom}
 \end{figure}
+
+\begin{comment}
+\section{Transit Geometry} \label{sec:Transit_Geometry}
+
+Several parameters describing the geometry of a transiting exoplanet system can be derived from the transit light curve. One of the most important is the impact parameter $(b)$, defined as the projected distance between the centre of the stellar disk and the transit chord:
+
+\begin{align}
+    b = \frac{a\cos{i}}{R_*}
+\end{align}
+
+Here, $a$ is the semi-major axis of the orbit, $i$ is the inclination, and $R_*$ is the radius of the star. These values are found using other methods but when combined give a good estimate for the impact parameter. Alongside the impact parameter, astronomers can get an accurate calculation of the transits duration as well. 
+
+\begin{align}
+    T = \frac{P}{\pi}\arcsin{\left(\frac{R_*}{a}\frac{\sqrt{(1-R_p/R_*)^2-b^2}}{\sin{i}}\right)}
+\end{align}
+
+$P$ is the period of the entire orbit which is easily resolved from the light curve and $R_p$ is the planets radius found using Equation~\ref{eq:flux_depth} \citep{2010exop.book...55W}. 
+
+\section{Signal to Red Noise} \label{sec:Signal_to_Red_Noise}
+
+\begin{align}
+    S_{red}=\frac{\delta\sqrt{N_t}}{\sigma L^b}
+\end{align}
+
+$L$ is average number of data points in one transit and it is in a power law with b which quantifies covariance structure of the correlated noise. $\sigma$ is the weighted rms scatter of the unbinned data set. Lastly $\delta$ is the flux depth. \citep{2006MNRAS.373..799C} 
+
+\section{Transit Detection Statistic} \label{sec:Transit_Detection_Statistic}
+
+Many transit-search algorithms detect signals by comparing the average
+stellar flux inside and outside a proposed transit window. In the
+Box Least Squares (BLS) algorithm the transit depth can be expressed as
+
+\begin{equation}
+\delta = \overline{F}_{\mathrm{out}} - \overline{F}_{\mathrm{in}}
+\end{equation}
+
+where $\overline{F}_{\mathrm{in}}$ and $\overline{F}_{\mathrm{out}}$ denote
+the mean flux during and outside the transit respectively. The statistical
+significance of the detection can then be approximated by
+
+\begin{equation}
+S = \frac{\delta}{\sigma}\sqrt{N_{\mathrm{tr}}},
+\end{equation}
+
+where $\sigma$ is the photometric noise of the light curve and
+$N_{\mathrm{tr}}$ is the number of observations within the transit window \citep{BLS_Algorithm}.
+\end{comment}
 
 
 \end{document}
