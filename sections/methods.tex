@@ -72,7 +72,11 @@ Now the data was ready to be split into the different sets. However it was very 
 
 The pipeline split the data using an 80/10/10 division for training, validation, and testing. Thus in preparation, the pipeline assigned 80\% of the KepIDs and saved them to the training set. The remaining 20\% was split in half to give 10\% to validation and 10\% to testing. Instead of taking the first 80\% of instances, the unique KepIDs were shuffled using a fixed random seed. This allowed randomization of which targets end up being used for training, validation, and testing while maintaining the rule of keeping associated KepIDs in the same set. 
 
-All the data needed to be normalized once more for preparation in the CNN. The data was subtracted from the median and divided by the standard deviation. This division step is useful for keeping the relative range of depths more controlled. Machine learning models tend to take large value differences as more important then they are. The division keeps the range smaller and thus does not let the model over inflate the importance of depths.
+All the data needed to be normalized once more for preparation in the CNN and the equation used is shown in Equation~\ref{eq:normalization}. For each instance i, the median of the instance was subtracted from every data point j. Then the result was divided by the standard deviation of the instance plus a small correction value of 1e-8 to avoid division by 0. This step centres the instances about their medium and is useful for keeping the relative range of depths more controlled. Machine learning models tend to take large value differences as more important then they are. The division keeps the range smaller and thus does not let the model over inflate the importance of depths.
+
+\begin{align}
+    x_{ij}' = \frac{x_{ij}-\tilde{x_i}}{\sigma_i+\epsilon} \label{eq:normalization}
+\end{align}
 
 With the data normalized, the splitting process was done separately for the transit and eclipsing binary data giving a training, validation, and testing dataset for both classes. Before concatenating the two classes, the label arrays were created. Class 0 was the label given to all confirmed eclipsing binaries while for confirmed transits they were labelled class 1. The training, validation, and test flux arrays and class labels were combined giving the completed sets of data and their outputs. 
 
