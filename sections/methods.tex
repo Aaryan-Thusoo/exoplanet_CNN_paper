@@ -63,7 +63,7 @@ For the multi-class version of the experiment, a threshold was required to separ
 The calculated signal to noise estimate of each instance was also needed. While Kepler does provide the \texttt{koi\_model\_snr} column, some rows especially in the eclipsing binary cases were missing values. In order to assign an SNR estimate to as many test cases as possible, a simple formula was applied and shown in Equation~\ref{eq:snr_calc}. As this quantity was calculated directly from the available light curves, this value allowed each instance to have an assigned relative SNR estimate. NumPy was used for the standard deviation and the catalogue depth values, the result for each instance was added to the updated table. 
 
 \begin{align}
-    \text{SNR} = \frac{\text{Transit Depth}}{\text{Standard Deviation}} \label{eq:snr_calc}
+    \text{SNR} = \frac{\text{Catalogue Depth}}{\sigma_\text{light curve}} \label{eq:snr_calc}
 \end{align}
 
 The light curve samples were split into training, validation, and testing sets. First the datasets were checked for overlapping KepIDs in the exoplanet and eclipsing binary datasets. While this should not happen it was a good precaution to make sure no targets were repeated in both classes. This could reduce the reliability of the learned classification boundary. Next, training is most effective when the exoplanets and eclipsing binaries datasets contain the same number of instances. This gives equal importance to learning the patterns in each class. Imbalanced class sizes can bias the model toward the more prevalent case and can skew final results. Thus the data sets are made to match the same number of total Kepler targets by limiting the eclipsing binaries to the same number as the transits. This takes the eclipsing binary dataset from 9259 to 7596 instances. 
@@ -95,28 +95,45 @@ To structure the CNN, the TensorFlow/Keras Python libraries were used. As CNNs a
 \begin{table}[h]
     \centering
     \small
-    \begin{tabularx}{\textwidth}{c l X}
+    \begin{tabularx}{\textwidth}{l X}
         \toprule
-        Layer \# & Layer Type & Parameters \\
+        \textbf{Layer / Block} & \textbf{Parameters} \\
         \midrule
-        1 & Input & Input length = 4894 \\
-        2 & Convolution & 32 channels, kernel size = 11, same padding \\
-        3 & Batch normalization & \\
-        4 & Activation & ReLU activation \\
-        5 & Max pooling & Pool size = 2 \\
-        6 & Dropout & Rate = 0.2 \\
-        7 & Convolution & 64 channels, kernel size = 11, same padding \\
-        8 & Batch normalization & \\
-        9 & Activation & ReLU activation \\
-        10 & Max pooling & Pool size = 2 \\
-        11 & Dropout & Rate = 0.2 \\
-        12 & Global pooling & \\
-        13 & Dense & 32 units, ReLU activation \\
-        14 & Dropout & Rate = 0.3 \\
-        15 & Output & Sigmoid for binary; softmax for multiclass \\
+        Input &
+        Input length = 4894 \\
+
+        Convolutional Block 1 &
+        32 filters, kernel size = 11, batch normalization,
+        ReLU, max pooling = 2, dropout = 0.15 \\
+
+        Convolutional Block 2 &
+        64 filters, kernel size = 7, batch normalization,
+        ReLU, max pooling = 2, dropout = 0.15 \\
+
+        Convolutional Block 3 &
+        128 filters, kernel size = 11, batch normalization,
+        ReLU, max pooling = 2, dropout = 0.20 \\
+
+        Global Average Pooling &
+        Global average pooling \\
+
+        Dense Block 1 &
+        128 units, ReLU activation, dropout = 0.30 \\
+
+        Dense Block 2 &
+        64 units, ReLU activation, dropout = 0.30 \\
+
+        Dense Block 3 &
+        16 units, ReLU activation \\
+
+        Output &
+        1 unit, sigmoid activation \\
         \bottomrule
     \end{tabularx}
-    \caption{Order of all layers used in the training of the neural network. All parameters applied are listed as well.}
+
+    \caption{Architecture of the binary convolutional neural network. Each
+    convolutional block consists of convolution, batch normalization, ReLU
+    activation, max pooling, and dropout. The multiclass model only varied with the output layer where there were 3 neurons to represent the 3 classes alongside a softmax activation.}
     \label{tab:layer_order}
 \end{table}
 
@@ -136,13 +153,13 @@ For the multiclass case, there were three output neurons with each representing 
     \text{C}_{\text{multiclass}} = \max{(p_0, p_1, p_2)}\label{eq:mc_confidence}
 \end{align}
 
-The above training process was repeated over several epochs with a backpropagation step after each mini-batch. For the backpropagation, the Adam optimizer was used. Adam was chosen as it adjusts update sizes for different network weights making it more stable than standard gradient descent. Alongside the optimizer was the learning rate which controlled how large each update step was. A choice of 0.005 was used to avoid too big steps and too small updates. Alongside this, a weight decay value of 0.001 was chosen. This value was used for regularization to discourage overly large weights throughout the model, preventing over-fitting.
+The above training process was repeated over several epochs with a backpropagation step after each mini-batch. For the backpropagation, the Adam optimizer was used. Adam was chosen as it adjusts update sizes for different network weights making it more stable than standard gradient descent. Alongside the optimizer was the learning rate which controlled how large each update step was. A choice of 0.0001 was used to avoid too big steps and too small updates. Alongside this, a weight decay value of 0.0001 was chosen. This value was used for regularization to discourage overly large weights throughout the model, preventing over-fitting.
 
-The loss function was needed to compare the results of each training iteration with the true labels and measures the difference between predicted scores and true labels. As the classification was binary, binary cross-entropy was the chosen loss function as it is appropriate for the sigmoid classification score. For the multiclass CNN, sparse categorical cross-entropy was used instead because labels were stored as integer values. For both models, as the total training dataset was large, a random selection of $32$ light curve samples were used to determine the weight updates during backpropagation. The model was trained for up to 20 epochs. Early stopping was used to monitor the validation loss during training and restore the model weights from the best validation epoch.
+The loss function was needed to compare the results of each training iteration with the true labels and measures the difference between predicted scores and true labels. As the classification was binary, binary cross-entropy was the chosen loss function as it is appropriate for the sigmoid classification score. For the multiclass CNN, sparse categorical cross-entropy was used instead because labels were stored as integer values. For both models, as the total training dataset was large, a random selection of $64$ light curve samples were used to determine the weight updates during backpropagation. The model was trained for up to 25 epochs. Early stopping was used to monitor the validation loss during training and restore the model weights from the best validation epoch. For the multiclass model, the learning rate was changed to 0.00025 while the weight decay was kept at 0.0001. The batch size and epochs were kept the same as well.
 
 After training, the weights and model architecture were saved to a \texttt{.keras} model file which can be loaded and applied to validation or test light curves prepared in the same format. Additionally, the history of the training was saved into a JSON file. This can then be used to inspect how the model performed at each epoch in its training process. Several metrics were chosen to record in the learning process. Accuracy was recorded as the fraction of correctly classified samples. As well, the loss was recorded to show the prediction error during training. The accuracy and loss results were recorded at each epoch for both the training data and validation data. The training loss results were taken into account for updating the model and the validation metrics were recorded to allow for later monitoring generalization during the model's training.
 
-Several other metrics were recorded after training. The finalized models were evaluated on the test set. The binary model saved holding the accuracy, precision, recall, F1 score, and ROC AUC. For the multiclass model, the accuracy, macro averaged precision, recall, and F1 score were saved. These results can then be used to asses more concretely what the model was good at and where it struggles. Appendix~\ref{sec:NN_equations} shows the equations which represents each metric.
+Several other metrics were recorded after training. The finalized models were evaluated on the test set. The binary model saved holding the accuracy, precision, recall, F1 score, and ROC AUC. For the multiclass model, the accuracy, macro averaged precision, recall, and F1 score were saved. These results can then be used to asses more concretely what the model was good at and where it struggles. For the multiclass model, macro-averaged precision, recall, and F1 score were used so that each class contributed equally to the final metric, rather than allowing larger classes to dominate the score. Appendix~\ref{sec:NN_equations} shows the equations which represents each metric and their general definitions.
 
 \subsubsection{Random Forest Model}
 

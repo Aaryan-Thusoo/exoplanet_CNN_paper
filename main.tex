@@ -70,9 +70,20 @@
 \newpage 
 \appendix \label{sec:Appendix}
 
+\section{Signal to Red Noise} \label{sec:Signal_to_Red_Noise}
+
+\begin{align}
+    S_{red}=\frac{\delta\sqrt{N_t}}{\sigma L^b}
+\end{align}
+
+$L$ is average number of data points in one transit and it is in a power law with b which quantifies covariance structure of the correlated noise. $\sigma$ is the weighted rms scatter of the unbinned data set. Lastly $\delta$ is the flux depth. \citep{2006MNRAS.373..799C} 
+
+
 \section{Neural Network Metric Equations} \label{sec:NN_equations}
 
-The following are the equations used to calculate the metrics used in this paper. T and F stand for True while P and N stand for Positive and Negative. R means Rate so for example FPR means False Positive Rate.
+The following are the equations used to calculate the metrics used in this paper. T and F stand for True and False while P and N stand for Positive and Negative. R means Rate so for example FPR means False Positive Rate.
+
+The first metric is the accuracy which is simply the number of correct results divided by the total number of test instances. An accuracy of X\% indicates the model returns the correct classification X\% of the time. This is good as a base but does not give information about the models classification of certain classes. The precision is the... 
 \begin{align}
     \text{Precision} = \frac{TP}{TP+FP}
 \end{align}
@@ -82,7 +93,7 @@ The following are the equations used to calculate the metrics used in this paper
 \end{equation}
 
 \begin{equation}
-    \text{False Positive Rate} = 1 - \text{Recall}
+    \text{False Negative Rate} = 1 - \text{Recall}
 \end{equation}
 
 \begin{equation}
@@ -159,13 +170,6 @@ Here, $a$ is the semi-major axis of the orbit, $i$ is the inclination, and $R_*$
 
 $P$ is the period of the entire orbit which is easily resolved from the light curve and $R_p$ is the planets radius found using Equation~\ref{eq:flux_depth} \citep{2010exop.book...55W}. 
 
-\section{Signal to Red Noise} \label{sec:Signal_to_Red_Noise}
-
-\begin{align}
-    S_{red}=\frac{\delta\sqrt{N_t}}{\sigma L^b}
-\end{align}
-
-$L$ is average number of data points in one transit and it is in a power law with b which quantifies covariance structure of the correlated noise. $\sigma$ is the weighted rms scatter of the unbinned data set. Lastly $\delta$ is the flux depth. \citep{2006MNRAS.373..799C} 
 
 \section{Transit Detection Statistic} \label{sec:Transit_Detection_Statistic}
 
