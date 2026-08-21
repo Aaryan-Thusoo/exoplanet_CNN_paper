@@ -1,4 +1,4 @@
-\section{Methodology}
+\section{Methodology} \label{sec:methodology}
 
 This section explains the full workflow used to develop all models used in this paper. The methodology was divided into four main stages: data collection, data preparation, model training, and results evaluation. Data were both synthetically generated and collected from archival Kepler sources. The collected data were then processed into fixed-length light-curve samples, labelled by class, and split into training, validation, and testing sets. Finally, two convolutional neural networks were trained on the data to distinguish between confirmed exoplanet transit signals and eclipsing binary light curves. The first model was a binary classification while the second split the eclipsing binary into shallow and deep cases creating a three-class multiclass model. The performance of both models was then evaluated using classification metrics and further misclassification analysis. To act as a baseline model for comparison against the CNNs, simple random forest models were also developed. 
 
