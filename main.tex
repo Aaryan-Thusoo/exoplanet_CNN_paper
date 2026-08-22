@@ -1,5 +1,7 @@
 \documentclass[12pt]{article}%[12pt, twocolumn]{aastex631}
 
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{newtxtext,newtxmath}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{amsmath}
@@ -11,9 +13,7 @@
 \usepackage{comment}
 \usepackage{tabularx}
 \usepackage{booktabs}
-
 \usepackage{afterpage}
-
 \usepackage{xcolor}
 \usepackage{listings}
 
@@ -45,15 +45,16 @@
             citecolor=blue,
             urlcolor=blue]{hyperref}
 
-\title{\textbf{Transit Exoplanet Surveys and False Positive Challenges}}
+\title{\textbf{Exoplanet Transit Classification with Limited Light-Curve Preprocessing Using Convolutional Neural Networks}}
 
 \date{August 27, 2026}
-\author{\textbf{Author}: Aaryan Thusoo \\ \textbf{Supervisor}: Prof. Vincent Van Eylen}
+\author{\textbf{Author}: Aaryan Thusoo \\ \textbf{Supervisors}: Prof. Vincent Van Eylen \& (Who is the other?)}
 
 \begin{document}
 
 \maketitle
-
+\pagenumbering{Roman}
+\thispagestyle{empty}
 \input{sections/introduction}
 \input{sections/extrasolar_detection}
 \input{sections/detection_challenges}
@@ -69,17 +70,6 @@
 
 \newpage 
 \appendix \label{sec:Appendix}
-
-\section{Signal to Red Noise} \label{sec:Signal_to_Red_Noise}
-
-\textbf{Mention what red noise is}
-
-\begin{align}
-    S_{red}=\frac{\delta\sqrt{N_t}}{\sigma L^b}
-\end{align}
-
-$L$ is average number of data points in one transit and it is in a power law with b which quantifies covariance structure of the correlated noise. $\sigma$ is the weighted rms scatter of the unbinned data set. Lastly $\delta$ is the flux depth. \citep{2006MNRAS.373..799C} 
-
 
 \section{Neural Network Metric Equations} \label{sec:NN_equations}
 

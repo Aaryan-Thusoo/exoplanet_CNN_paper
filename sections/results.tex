@@ -3,8 +3,8 @@
 This section presents the results of the binary and multiclass models for Kepler archive data. Starting with the binary convolutional neural network, the model attempted to learn the general differences between transits and eclipsing binary light curves. To examine and manage the range of eclipsing binaries, the multiclass CNN was used separating shallow and deep EBs. Lastly, the random forest models for both binary and multiclass cases were used to serve as a baseline for the quality of the CNNs.
 
 
-\subsection{Binary CNN Training History}
-
+\subsection{Binary CNN Model}
+\subsubsection{Training History}
  The model was trained over 21 epochs with early stopping. During this time, the loss and accuracy of the training data were recorded at the end of each epoch. The validation data was not used in the updating of weights but was used to evaluate performance at the end of each epoch and recorded as well. This was done to evaluate improvements of the model over time to make sure to avoid under or over training. The results throughout the epoch are recorded to check learning progress and overfitting.
 
 \begin{figure}[H]
@@ -34,7 +34,7 @@ This section presents the results of the binary and multiclass models for Kepler
  
 Figure~\ref{fig:bi_history} shows line plots of the training and validation results across epochs. Loss decreases over the first epochs and begins to stabilize showing the model learned discriminative patterns but eventually hits a performance plateau on its performance. The accuracy increases during the early epochs but also stabilizes showing improved classification performance. The flattening of the curves suggest adding more epochs would be unlikely to substantially improve. As in both cases the training and validation lines have the same shape and do not spread far apart from one another, there is no strong evidence the model has not suffered from noticeable over fitting. 
 
-\subsection{Binary CNN Test Performance}
+\subsubsection{Test Performance}
 
 Experiments using more or fewer epochs led to a consistent trend of overfitting or underfitting. After the completion of the training, the model was evaluated on the test data to determine the model's quality. The test data was not provided to the model throughout training and thus the dataset was now useful for evaluating the models ability to detect class specific patterns. In total there were 938 test instances used with there being a roughly equal split of transits and eclipsing binaries. After the evaluation of the model, the evaluation metrics were saved and are recorded below in Table~\ref{tab:metrics_table}. 
 
@@ -58,24 +58,33 @@ The accuracy shows the model correctly classified about $92\%$ of all the test l
 
 The F1 score of $92\%$ sumarizes the balance of the precision and recall. This value indicates the model maintains a reasonable balance between recovering true transits and avoiding false transit detections, although precision remains the weaker component. Finally, the ROC AUC result of 0.97 is strong and thus shows that the model separates the two classes reasonably well across classification thresholds. There is little to no room for threshold tuning to potentially improve the model further. 
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
-    \includegraphics[width=0.85\linewidth]{figures/plots/bi_confusion_matrix.png}
-    \caption{The above plot is a 2x2 confusion matrix represnting the results of the binary CNN model. The model comfortably classifies the true transits, only misclassifying 3.6\% of all transit. However it does struggle slightly with the eclipsing binary cases where it missed 12.1\%, classifying them as false positive transits.}
+    \includegraphics[width=0.99\linewidth]{figures/plots/bi_confusion_matrix.png}
+    \caption{The above plot is a 2x2 confusion matrix representing the results of the binary CNN model. The model comfortably classifies the true transits, only misclassifying 3.6\% of all transit. However it does struggle slightly with the eclipsing binary cases where it missed 12.1\%, classifying them as false positive transits.}
     \label{fig:acc_conf_matrix}
 \end{figure}
 
 
 A confusion matrix is also helpful for evaluating the model results. Figure~\ref{fig:acc_conf_matrix} shows the confusion matrix and depicts how well the binary model performed. By looking at the figure, this pattern is consistent with the metrics observed earlier. 12.1\% of eclipsing binaries were incorrectly classified compared to only 3.6\% of transits. It is shown in clearer view how the model misclassified a larger fraction of eclipsing binaries than transits and thus the network tended to predict instances as transits. 
 
-\subsection{Binary CNN Analysis}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/plots/bi_pr_results.png}
+    \caption{The precision-recall curve for the binary CNN model. The black point represents the model performance using the 0.5 classification threshold applied throughout this paper. Moving left along the curve represents increasing the classification threshold, while moving right represents decreasing the threshold. The model achieved an average precision of 0.950 across the range of classification thresholds.}
+    \label{fig:bi_pr}
+\end{figure}
+
+In addition to the evaluation metrics calculated using the 0.5 classification threshold, a precision-recall curve was produced to evaluate the binary CNN across a range of classification thresholds. Figure~\ref{fig:bi_pr} shows the relationship between precision and recall as the required classification threshold is changed. The model shows strong performance across the range of thresholds rather than only at the 0.5 threshold used for the final classifications. The marked point shows the precision and recall achieved at the 0.5 threshold used throughout this work.
+
+\subsubsection{Misclassification Analysis}
 
 Of the 938 test instances used, 74 were misclassified. There were 57 false positives and 17 false negatives and to understand why the model misclassified certain samples it is important to analyse the properties of these light curve instances. The first feature to analyse was the distribution of confidence for all test instances. Classifications with low confidence indicate the model prediction was close to the decision boundary. Misclassified instances with high confidence are of particular interest as the model assigns high confidence despite being incorrect. In a binary classification model, it is expected to see incorrect instances with low confidence near the 0.5 threshold. Thus it is important to analyse the incorrect cases which received higher confidence values. 
 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{figures/plots/bi_confidence_correct_vs_incorrect.png}
+    \includegraphics[width=0.99\linewidth]{figures/plots/bi_confidence_correct_vs_incorrect.png}
     \caption{Distribution of each confidence value the binary model returned. All correct classifications shown in blue while incorrect classifications shown in orange. An interesting bump in mistakes by the model is found in the high 0.8-1.0 region. Y-axis log scaled for readability.}
     \label{fig:conf_corr_vs_incorr_hist}
 \end{figure}
@@ -89,14 +98,14 @@ The features chosen to be looked into are labelled in Table~\ref{tab:kep_query_c
 \begin{figure}[H]
     \centering
 
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/plots/fp_boxplot_calculated_SNR.png}
         \caption{Boxplot of calculated SNR estimates for false positives}
         \label{fig:calc_snr_boxplot_fp}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/plots/fn_boxplot_calculated_SNR.png}
         \caption{Boxplot of calculated SNR estimates for false negatives}
@@ -113,7 +122,7 @@ In the false positive plot, there is a broad distribution of SNR values in the l
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{figures/plots/bi_mistake_ratios_by_calculated_snr_and_confidence_bottom.png}
+    \includegraphics[width=0.99\linewidth]{figures/plots/bi_mistake_ratios_by_calculated_snr_and_confidence_bottom.png}
     \caption{Incorrect classification ratio for the binary CNN across calculated SNR groups and prediction-confidence levels. The numbers listed above each bar show the number of incorrectly classified samples in each bin.}
     \label{fig:bi_mistake_ratio_calc_snr}
 \end{figure}
@@ -122,17 +131,17 @@ Figure~\ref{fig:bi_mistake_ratio_calc_snr} focuses on the incorrect classificati
 
 \subsubsection{Transit Depth} 
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
 
-    \begin{subfigure}[b]{0.48\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/plots/fp_boxplot_transit_depth_abs.png}
         \caption{Boxplot of absolute depth values for false positives}
         \label{fig:depth_boxplot_fp}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.48\textwidth}
+    \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/plots/fn_boxplot_transit_depth_abs.png}
         \caption{Boxplot of absolute depth values for false negatives}
@@ -150,15 +159,15 @@ Just like the calculated signal-to-noise ratio, the transit depth can be split i
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{figures/plots/bi_mistake_ratios_by_absolute_transit_depth_and_confidence_bottom.png}
+    \includegraphics[width=0.99\linewidth]{figures/plots/bi_mistake_ratios_by_absolute_transit_depth_and_confidence_bottom.png}
     \caption{Incorrect classification ratio for the binary CNN across transit-depth groups and prediction-confidence levels. The numbers listed above each bar show the number of incorrectly classified samples in each bin.}
     \label{fig:bi_mistake_ratio_depth}
 \end{figure}
 
 The trend is further supported when looking at the applied multiclass classification of the eclipsing binaries. Of the 12 high confidence false positive light curve chunks, 9 are labelled as shallow eclipsing binaries. This combined to 20 out 24 unique KepIDs making a roughly 80\% rate of shallow eclipsing binaries being the high confidence misclassified instances. For this reason, depth of the eclipses is useful to analyse further which leads to the multiclass model used next.
 
-\subsection{Threshold For Multiclass Model}
-
+\subsection{Multiclass Model}
+\subsubsection{Threshold Determination}
 The multiclass model required splitting the eclipsing binary instances into shallow and eclipsing cases. There is no definite answer in the Kepler pipeline to specify what constitutes a shallow or deep eclipsing binary and thus a threshold needed to be determined \citep{Kirk_2016, Abdul_Masih_2016}. 
 
 In order to find this threshold value, it was useful to look at where the binary model struggled when focusing on depth. Using training data would possibly lead to lower errors as the model would be more used to these instances so the validation data was used. By plugging only the eclipsing binary validation instances, the depth and model classification for each is saved. Figure~\ref{fig:mc_threshold_find} shows the results of the validation model instances. 
@@ -172,7 +181,7 @@ In order to find this threshold value, it was useful to look at where the binary
 
 Looking at the histogram above, the majority of misclassified eclipsing binaries are found when the saved depth is $\leq 0.01$ which matches to a depth of 1\%. Thus shallow eclipsing binaries in this paper are defined as eclipsing binary instances with their recorded depth as 0.01 or lower. 
 
-\subsection{Multiclass CNN Training History}
+\subsubsection{Training History}
 
 The training procedure for the multiclass case was the same as the binary case, but the output classes were changed to three categories. With three classes, the classification task was more difficult and lower performance was expected. The model training was evaluated using the loss and accuracy histories shown in Figure~\ref{fig:mc_history}. The multiclass model ran for 14 epochs with early stopping before reaching 20 iterations. Once again, there was no large separation between the training and validation data, indicating no prominent overfitting. The loss values are higher across training compared to the binary model, while the accuracy is also lower across the epochs.
 
@@ -197,7 +206,7 @@ The training procedure for the multiclass case was the same as the binary case, 
 \end{figure}
 
 
-\subsection{Multiclass CNN Test Performance}
+\subsubsection{Test Performance}
 
 Most metrics were calculated for the multiclass model as for the binary model. ROC AUC was not reported because the main comparison focused on accuracy, macro-averaged precision, macro-averaged recall, and macro-averaged F1 score. The accuracy was lower than the binary model, and the remaining metrics were also noticeably lower except for precision. As all the metrics are roughly in the $75\%$ range, this indicates moderate classification performance, but the CNN struggles to separate the classes in a substantial fraction of instances. This may reflect the similarities between shallow eclipsing binaries and transiting exoplanet signals.
 
@@ -221,20 +230,20 @@ Figure~\ref{tab:mc_metrics_table} shows the metrics from the multiclass CNN mode
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{figures/plots/multiclass/mc_confusion_matrix.png}
+    \includegraphics[width=0.99\linewidth]{figures/plots/multiclass/mc_confusion_matrix.png}
     \caption{Confusion matrix generated from test data results from multiclass model. The transit and deep eclipsing binary classes perform well with the majority of instances in these classes, being predicted correctly. Most misclassifications are with the shallow eclipsing binary class indicating the cases in this class are the hardest for the model to identify.}
     \label{fig:mc_confusion_matrix}
 \end{figure}
 
 Taking a look at the multiclass model's confusion matrix in Figure~\ref{fig:mc_confusion_matrix}, it is easier to see where the model is running into issues. The transits, which are class 0, are most often correctly determined by the model, with 83.3\% of all transiting exoplanets being found. The deep eclipsing binaries, which have deeper dips in the flux, also have a relatively high number of correctly classified instances. It is class 1, the shallow eclipsing binaries, where the model struggles the most. It is important to note how the majority of misclassified shallow eclipsing binaries were mistaken for transits. This was expected, as the purpose of splitting the eclipsing binaries into two sections was to see if the model had difficulty separating transits from eclipsing binary systems with dips similar to those made by exoplanets. There is still a group of instances in the shallow and deep cases which were confused with one another. This is likely due to the threshold determined for splitting the eclipsing binary groups.
 
-\subsection{Multiclass CNN Confidence and Misclassification Analysis}
+\subsubsection{Misclassification Analysis}
 
 Figure~\ref{fig:mc_confidence_correct_vs_incorrect} shows the distribution of confidence results returned by the model, similar to what was done in the binary classification case. Here the model has a clear peak in the high confidence $\geq0.9$ range, where many correct classifications are found. It is also easier to note that the number of high confidence misclassifications is lower than in the binary case. There is also a large peak in the medium confidence range, with most correct instances falling in this range while a large number of incorrect responses are also found. From this histogram, it can be said that the model confidence is informative, although a good number of errors still occur where the model is moderately confident but not fully certain.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{figures/plots/multiclass/mc_confidence_correct_vs_incorrect.png}
+    \includegraphics[width=0.99\linewidth]{figures/plots/multiclass/mc_confidence_correct_vs_incorrect.png}
     \caption{A histogram showing the spread of frequency of each confidence value the multiclass model returned. All correct classifications shown in blue while incorrect classifications shown in orange. There is a wider spread of high confidence misclassified instances.}
     \label{fig:mc_confidence_correct_vs_incorrect}
 \end{figure}
@@ -243,57 +252,47 @@ Figure~\ref{fig:mc_mistake_ratio_depth} shows the incorrect classification ratio
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{figures/plots/multiclass/mc_mistake_ratios_by_absolute_transit_depth_and_confidence_bottom.png}
+    \includegraphics[width=0.99\linewidth]{figures/plots/multiclass/mc_mistake_ratios_by_absolute_transit_depth_and_confidence_bottom.png}
     \caption{Incorrect classification ratio for the multiclass CNN across absolute transit-depth groups and confidence groups. The values above each bar show the number of misclassified samples in each depth and confidence bin.}
     \label{fig:mc_mistake_ratio_depth}
 \end{figure}
 
-\subsection{Baseline Random Forest Models}
+\subsection{Baseline Random Forest Models} 
 
-To determine if the models are an improvement against simpler models, a random forest model was used. After running the classifier, the results are shown in Figure~\ref{fig:bi_rf}. Figure~\ref{fig:bi_rf_cols} shows how important each physical property is for the model. The most important property is the chunk depth with the largest feature importance value. This can be expected as eclipsing binaries typically have deeper eclipses than transiting exoplanets can create. Mainly this is due to the size of stars compared to that of most planets. Figure~\ref{fig:bi_rf_confusion_matrix} shows the model's results similar to the CNN models. Comparing this confusion matrix to the binary CNN model, the accuracy is slightly lower. The binary random forest model does not perform as well when it comes to classifying the true exoplanet transits correctly. This could be due to the random forest not defaulting to transits as easily. This would help to explain why the random forest managed to perform better on the eclipsing binary category compared to the binary CNN.
-
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.99\linewidth]{figures/plots/bi_feature_importance.png}
+    \caption{Feature importance determined by the binary random forest model. The chunk depth has the highest rated importance showing the model determined classifications based primarily on the chunk depth. However, other statistic properties such as the max depth also are useful for classification.}
+    \label{fig:bi_rf_cols}
+\end{figure}
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[b]{0.9\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/plots/bi_feature_importance.png}
-        \subcaption{Feature importances for the binary random forest model.}
-        \label{fig:bi_rf_cols}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.75\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/plots/bi_rf_confusion_matrix.png}
-        \subcaption{Confusion matrix for the binary random forest model on the test set.}
-        \label{fig:bi_rf_confusion_matrix}
-    \end{subfigure}
+    \includegraphics[width=0.99\linewidth]{figures/plots/bi_rf_confusion_matrix.png}
+    \caption{Confusion matrix from the evaluation of the test data. The model in comparison to the binary CNN model is similar with sightly poorer performance. }
+    \label{fig:bi_rf_confusion_matrix}
+\end{figure}
 
-    \caption{Binary random forest evaluation results. Panel (a) shows the relative importance of the input summary statistics used by the model, while panel (b) shows the normalized confusion matrix with counts shown in each cell.}
-    \label{fig:bi_rf}
+To determine if the models are an improvement against simpler models, a random forest model was used. After running the classifier, the results are shown above. Figure~\ref{fig:bi_rf_cols} shows how important each physical property is for the model. The most important property is the chunk depth with the largest feature importance value. This can be expected as eclipsing binaries typically have deeper eclipses than transiting exoplanets can create. Mainly this is due to the size of stars compared to that of most planets. Figure~\ref{fig:bi_rf_confusion_matrix} shows the model's results similar to the CNN models. Comparing this confusion matrix to the binary CNN model, the accuracy is slightly lower. The binary random forest model does not perform as well when it comes to classifying the true exoplanet transits correctly. This could be due to the random forest not defaulting to transits as easily. This would help to explain why the random forest managed to perform better on the eclipsing binary category compared to the binary CNN.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.99\linewidth]{figures/plots/multiclass/mc_feature_importance.png}
+    \caption{Multiclass random forest evaluation results. Panel (a) shows the relative importance of the input summary statistics used by the model, while panel (b) shows the normalized confusion matrix with counts shown in each cell.}
+    \label{fig:mc_rf_cols}
 \end{figure}
 
 Using now a random forest classifier on the multiclass model, Figure~\ref{fig:mc_rf_cols} shows the property importance. It is seen that the maximum value and standard deviation of the flux have the most importance but overall no single property makes enough difference on its own. For normalized light curves, there can still be flux values above 1.0 which create an upper shape. This may be correlated with eclipsing binaries, which are understood to have a slight rise in flux when the two stars are perfectly side by side in our line of sight. The other features show importance as well, with the chunk depth and average flux values likely being from separating transits from deep eclipsing binaries.
 
+
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[b]{0.9\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/plots/multiclass/mc_feature_importance.png}
-        \subcaption{Feature importances for the multiclass random forest model.}
-        \label{fig:mc_rf_cols}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.9\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/plots/multiclass/mc_rf_confusion_matrix.png}
-        \subcaption{Confusion matrix for the multiclass random forest model on the test set.}
-        \label{fig:mc_rf_confusion_matrix}
-    \end{subfigure}
-
-    \caption{Multiclass random forest evaluation results. Panel (a) shows the relative importance of the input summary statistics used by the model, while panel (b) shows the normalized confusion matrix with counts shown in each cell.}
-    \label{fig:mc_rf}
+    \includegraphics[width=0.99\linewidth]{figures/plots/multiclass/mc_rf_confusion_matrix.png}
+    \caption{Multiclass random forest evaluation results. Panel (a) shows the relative importance of the input summary statistics used by the model, while panel (b) shows the normalized confusion matrix with counts shown in each cell.
+}
+    \label{fig:mc_rf_confusion_matrix}
 \end{figure}
+
 
 Figure~\ref{fig:mc_rf_confusion_matrix} looks at the confusion matrix generated from the multiclass test data through the random forest. The results appear to be slightly better than the convolutional neural network. The multiclass random forest managed to be the best in classifying deep eclipsing binaries, at a higher rate than the CNN. Its transit accuracy was slightly lower while the shallow eclipsing binaries showed an improvement as well. Similar to the multiclass CNN, the majority of misclassifications by the random forest are between the transits and shallow eclipsing binaries. This is again likely due to the similarity in depth and transit shape between these two groups. In cases where two eclipsing binary stars are similar in size, their odd and even depths may look too similar and confuse the model into thinking it is a single exoplanet transit.
 
